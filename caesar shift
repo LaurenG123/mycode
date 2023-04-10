@@ -1,0 +1,63 @@
+def dupremv(nums):
+    return[a for a,b in zip(nums, nums[1:] + [not nums[-1]]) if a != b]
+
+def encode(revdict,upperdict):
+    textt = input("enter text file to be encoded: ")
+    trans = ""
+    with open(textt, 'r') as enc:
+        for line in enc:
+            for word in line:
+                for i in word:
+                    if i.isalpha():
+                        if i.isupper():
+
+                            trans += upper_dict[i]
+                        else:
+                            trans += revdict[i]
+
+                    else:
+                        trans += (" ")
+    print(trans)
+    textt.close
+    pass
+
+
+def decode(cipdict,uper_dict):
+    textt = input("enter text file to be decoded: ")
+    trans = ""
+    with open(textt, 'r') as enc:
+        for line in enc:
+            for word in line:
+                for i in word:
+                    if i.isalpha():
+                        if i.isupper():
+                            trans += uper_dict[i]
+                        else:
+                            trans += cipdict[i]
+                    else:
+                        trans += (" ")
+    print(trans)
+    textt.close()
+    pass
+
+
+if __name__ == '__main__':
+    rkey = dupremv(list(input("enter cipher key: ")))
+    print(f"KEY : {rkey}")
+    alphab = list(map(chr,range(97,123)))
+    revalphab = list(reversed(alphab))
+
+    cipher = list(dict.fromkeys(rkey + revalphab))
+
+    cipdict = dict(zip(cipher,revalphab))
+    revdict = {v: k for k, v in cipdict.items()}
+
+    upper_dict = dict((k.upper(), v.upper()) for k, v in revdict.items())
+    uper_dict = dict((k.upper(), v.upper()) for k, v in cipdict.items())
+
+    deen = input("enter 'e' to encrypt, 'd' to decrypt: ")
+    while True:
+        if deen == 'e':
+            encode(revdict,upper_dict)
+        elif deen == 'd':
+            decode(cipdict,uper_dict)
